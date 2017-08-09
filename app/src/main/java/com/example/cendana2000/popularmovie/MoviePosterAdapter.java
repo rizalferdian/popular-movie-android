@@ -7,22 +7,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.cendana2000.popularmovie.utilities.MovieDBResult;
 import com.example.cendana2000.popularmovie.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 /**
  * Created by Cendana2000 on 30-Jun-17.
  */
 
 public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.MoviePosterViewHolder> {
-    private String[] mMoviePosterPath;
-    private String[] mMovieData;
+    private List<MovieDBResult> mMovieData;
 
     private Context context;
     private final ListItemClickListener mOnClickListener;
 
     public interface ListItemClickListener {
-        void onListItemClick(String url, String data);
+        void onListItemClick(MovieDBResult movieDBResult);
     }
 
     public MoviePosterAdapter(ListItemClickListener listener) {
@@ -42,25 +44,30 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
 
     @Override
     public void onBindViewHolder(MoviePosterViewHolder holder, int position) {
-        String path = mMoviePosterPath[position];
+        String path = mMovieData.get(position).getPosterPath();
         String url  = NetworkUtils.getMoviePosterUrl(path);
         Picasso.with(context).load(url).into(holder.mMoviePosterImageView);
     }
 
     @Override
     public int getItemCount() {
-        if (null == mMoviePosterPath) return 0;
-        return mMoviePosterPath.length;
+        if (null == mMovieData) return 0;
+        return mMovieData.size();
     }
 
-    public void setData(String[] jsonString, String[] data) {
-        mMoviePosterPath = jsonString;
-        mMovieData = data;
+    public void setData(List<MovieDBResult> movieDBResults) {
+        mMovieData = movieDBResults;
         notifyDataSetChanged();
     }
 
+    public void addData(List<MovieDBResult> movieDBResults) {
+        mMovieData.addAll(movieDBResults);
+        int lastIndex = mMovieData.size() - 1;
+        notifyItemRangeInserted(lastIndex, movieDBResults.size());
+    }
+
     class MoviePosterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final ImageView mMoviePosterImageView;
+        ImageView mMoviePosterImageView;
 
         public MoviePosterViewHolder(View itemView) {
             super(itemView);
@@ -71,13 +78,8 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-
-            String path = mMoviePosterPath[position];
-            String url  = NetworkUtils.getMoviePosterUrl(path);
-
-            String mMovieDataString = mMovieData[position];
-
-            mOnClickListener.onListItemClick(url, mMovieDataString);
+            MovieDBResult movieDBResult = mMovieData.get(position);
+            mOnClickListener.onListItemClick(movieDBResult);
         }
     }
 }

@@ -63,6 +63,12 @@
                     android:textSize="18sp"
                     android:layout_marginBottom="10dp"/>
 
+                <ToggleButton
+                    android:id="@+id/tb_movie_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="toogleFavorite"/>
+
             </LinearLayout>
         </LinearLayout>
 
@@ -84,7 +90,32 @@
                 android:id="@+id/tv_movie_overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:paddingBottom="14dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/trailer_label" />
+
+            <Button
+                android:id="@+id/b_movie_trailer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Watch Trailer"
+                android:onClick="openVideo"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/reviews_label" />
+
+            <TextView
+                android:id="@+id/tv_movie_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </LinearLayout>

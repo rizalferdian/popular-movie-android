@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="pref_sort_by_options" >
+        <item>Most Popular</item>
+        <item>Highest Rated</item>
+    </array>
+
+    <array name="pref_sort_by_values" >
+        <item>popular</item>
+        <item>top_rated</item>
+    </array>
+</resources>
