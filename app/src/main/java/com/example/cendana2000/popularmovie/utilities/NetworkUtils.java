@@ -1,5 +1,7 @@
 package com.example.cendana2000.popularmovie.utilities;
 
+import android.net.Uri;
+
 /**
  * Created by Cendana2000 on 03-Jul-17.
  */
@@ -15,6 +17,8 @@ public class NetworkUtils {
             "&page=";
     private static final String YOUTUBE_BASE_URL =
             "https://www.youtube.com/watch";
+    private static final String YOUTUBE_PACKAGE =
+            "com.google.android.youtube";
 
     private static final String size = "/w342/";
     public static String getMoviePosterUrl(String path) {
@@ -26,7 +30,12 @@ public class NetworkUtils {
     public static String getAPIKey() {
         return API_KEY;
     }
-    public static String getYoutubeBaseUrl() {
-        return YOUTUBE_BASE_URL;
+    public static Uri getYoutubeUrl(String key) {
+        Uri uri = Uri.parse(YOUTUBE_BASE_URL);
+        uri = uri.buildUpon().appendQueryParameter("v", key).build();
+        return uri;
+    }
+    public static String getYoutubePackage() {
+        return YOUTUBE_PACKAGE;
     }
 }

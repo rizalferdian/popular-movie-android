@@ -48,12 +48,13 @@ public class MovieProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case CODE_MOVIE:
                 cursor = db.query(MovieEntry.TABLE_NAME,
-                        null, null, null, null, null, null);
+                        null, selection, selectionArgs, null, null, null);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -82,17 +83,49 @@ public class MovieProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         SQLiteDatabase db = movieDBHelper.getWritableDatabase();
-        int totalDeleted;
 
         switch (uriMatcher.match(uri)) {
             case CODE_MOVIE:
+                int rowInserted = 0;
+                db.beginTransaction();
+
+                try{
+                    for(ContentValues value: values) {
+                        long id = db.insert(MovieEntry.TABLE_NAME, null, value);
+                        if(id != -1) rowInserted++;
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+
+                if(rowInserted > 0)
+                    getContext().getContentResolver().notifyChange(uri, null);
+
+                return rowInserted;
+            default:
+                return super.bulkInsert(uri, values);
+        }
+    }
+
+    @Override
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        SQLiteDatabase db = movieDBHelper.getWritableDatabase();
+        int totalDeleted = 0;
+
+        switch (uriMatcher.match(uri)) {
+            case CODE_MOVIE_WITH_ID:
                 String id = uri.getLastPathSegment();
-                totalDeleted = db.delete(MovieEntry.TABLE_NAME, "_id=?", new String[]{id});
+                totalDeleted = db.delete(MovieEntry.TABLE_NAME, MovieEntry.COLUMN_ID + "=? and " + MovieEntry.COLUMN_SORT_PREF + "=?", new String[]{id, "favorite"});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if(totalDeleted > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
         }
 
         return totalDeleted;

@@ -9,13 +9,13 @@ import java.util.List;
  * Created by Cendana2000 on 31-Jul-17.
  */
 
-public class MovieDBVideosResponse {
+public class MovieDBTrailersResponse {
     @SerializedName("id")
     @Expose
     private Integer id;
     @SerializedName("results")
     @Expose
-    private List<MovieDBVideosResult> results = null;
+    private List<MovieDBTrailersResult> results = null;
 
     public Integer getId() {
         return id;
@@ -25,11 +25,11 @@ public class MovieDBVideosResponse {
         this.id = id;
     }
 
-    public List<MovieDBVideosResult> getResults() {
+    public List<MovieDBTrailersResult> getResults() {
         return results;
     }
 
-    public void setResults(List<MovieDBVideosResult> results) {
+    public void setResults(List<MovieDBTrailersResult> results) {
         this.results = results;
     }
 }

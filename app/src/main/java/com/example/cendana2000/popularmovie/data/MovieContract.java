@@ -18,10 +18,12 @@ public class MovieContract {
                 .appendPath(PATH_MOVIE)
                 .build();
         public static final String TABLE_NAME = "movie";
+        public static final String COLUMN_ID = "movie_id";
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_RELEASE = "release_date";
         public static final String COLUMN_RATING = "vote_average";
         public static final String COLUMN_OVERVIEW = "overview";
         public static final String COLUMN_POSTER = "poster";
+        public static final String COLUMN_SORT_PREF = "sort_pref";
     }
 }

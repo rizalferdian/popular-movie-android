@@ -14,8 +14,8 @@ public interface MovieDBService {
     Call<MovieDBResponse> getMovies(@Path("sortBy") String sortBy, @Query("page") int page, @Query("api_key") String apiKey);
 
     @GET("movie/{id}/videos")
-    Call<MovieDBVideosResponse> getVideos(@Path("id") int id, @Query("api_key") String apiKey);
+    Call<MovieDBTrailersResponse> getVideos(@Path("id") int id, @Query("api_key") String apiKey);
 
     @GET("movie/{id}/reviews")
-    Call<MovieDBVideosResponse> getReviews(@Path("id") int id, @Query("api_key") String apiKey);
+    Call<MovieDBReviewsResponse> getReviews(@Path("id") int id, @Query("api_key") String apiKey);
 }

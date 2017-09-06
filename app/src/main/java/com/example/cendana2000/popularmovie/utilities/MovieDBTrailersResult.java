@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Cendana2000 on 31-Jul-17.
  */
 
-public class MovieDBVideosResult {
+public class MovieDBTrailersResult {
     @SerializedName("id")
     @Expose
     private String id;

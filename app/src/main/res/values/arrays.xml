@@ -3,10 +3,12 @@
     <array name="pref_sort_by_options" >
         <item>Most Popular</item>
         <item>Highest Rated</item>
+        <item>Favorite</item>
     </array>
 
     <array name="pref_sort_by_values" >
         <item>popular</item>
         <item>top_rated</item>
+        <item>favorite</item>
     </array>
 </resources>

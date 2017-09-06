@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
     <LinearLayout
@@ -63,11 +64,12 @@
                     android:textSize="18sp"
                     android:layout_marginBottom="10dp"/>
 
-                <ToggleButton
-                    android:id="@+id/tb_movie_favorite"
+                <Button
+                    android:id="@+id/b_movie_favorite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="toogleFavorite"/>
+                    android:text="@string/mark_as_favorite"
+                    />
 
             </LinearLayout>
         </LinearLayout>
@@ -94,28 +96,30 @@
                 android:paddingBottom="14dp"/>
 
             <TextView
+                android:id="@+id/tv_movie_trailer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:text="@string/trailer_label" />
+                android:text="@string/trailer_label"
+                android:visibility="gone" />
 
-            <Button
-                android:id="@+id/b_movie_trailer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Watch Trailer"
-                android:onClick="openVideo"/>
-
-            <TextView
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_movie_trailer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="@string/reviews_label" />
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/tv_movie_review"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/reviews_label"
+                android:visibility="gone"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_movie_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
     </LinearLayout>

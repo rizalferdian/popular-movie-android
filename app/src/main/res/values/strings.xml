@@ -13,7 +13,12 @@
     <string name="pref_sort_by_key" translatable="false">sort_by</string>
     <string name="pref_sort_by_title">Sort Movie By</string>
     <string name="pref_sort_by_default">popular</string>
+    <string name="pref_sort_by_favorite">favorite</string>
     <string name="settings_menu_label">Settings</string>
     <string name="trailer_label">Trailer List</string>
     <string name="reviews_label">Reviews</string>
+    <string name="mark_as_favorite">Mark as Favorite</string>
+    <string name="unmark_from_favorite">Unmark from Favorite</string>
+    <string name="watch_trailer">Watch Trailer</string>
+    <string name="movie_trailer_button">Movie Trailer</string>
 </resources>
