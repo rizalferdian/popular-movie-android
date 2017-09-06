@@ -56,12 +56,15 @@ public class MainActivity extends AppCompatActivity implements
 
     @BindString(R.string.pref_sort_by_key) String sortByKey;
     @BindString(R.string.pref_sort_by_default) String sortByDefault;
+    @BindString(R.string.pref_sort_by_favorite) String sortByFavorite;
 
     private final String RECYCLER_VIEW_KEY = "rv_location";
     private static final int ID_FORECAST_LOADER = 91;
 
     int currentPage = 1;
     SharedPreferences sharedPreferences;
+    GridLayoutManager layoutManager;
+    Bundle mLayoutManagerSavedState = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // setting recyleview
         mMoviePosterAdapter = new MoviePosterAdapter(this);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, calculateNoOfColumns(this));
+        layoutManager = new GridLayoutManager(this, calculateNoOfColumns(this));
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mMoviePosterAdapter);
         mRecyclerView.setHasFixedSize(true);
@@ -82,13 +85,10 @@ public class MainActivity extends AppCompatActivity implements
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
-        if(savedInstanceState != null){
-            Parcelable parcelable = savedInstanceState.getParcelable(RECYCLER_VIEW_KEY);
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(parcelable);
-        } else {
-            // display data
-            setDataToRecylerView();
+        if(savedInstanceState != null) {
+            mLayoutManagerSavedState = savedInstanceState;
         }
+        setDataToRecylerView();
     }
 
     // method to calculate the columns
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements
         Cursor cursor = getContentResolver().query(MovieEntry.CONTENT_URI, null, MovieEntry.COLUMN_SORT_PREF + "=?", new String[]{prefSortBy}, null);
         if(cursor.getCount() > 0) {
             getSupportLoaderManager().restartLoader(ID_FORECAST_LOADER, null, this);
-        } else if(prefSortBy.equals("favorite")) {
+        } else if(prefSortBy.equals(sortByFavorite)) {
             Toast.makeText(getBaseContext(), "You don't have any Favorite Movie yet.", Toast.LENGTH_SHORT).show();
         } else {
             loadMovieData(currentPage);
@@ -227,6 +227,14 @@ public class MainActivity extends AppCompatActivity implements
         mRecyclerView.setVisibility(View.INVISIBLE);
     }
 
+    private void restoreLayoutManagerPosition() {
+        if(mLayoutManagerSavedState != null){
+            Parcelable parcelable = mLayoutManagerSavedState.getParcelable(RECYCLER_VIEW_KEY);
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(parcelable);
+            mLayoutManagerSavedState = null;
+        }
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch(id) {
@@ -244,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mMoviePosterAdapter.setData(data);
+        restoreLayoutManagerPosition();
     }
 
     @Override

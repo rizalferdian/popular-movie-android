@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,8 @@ public class MovieDetailActivity extends AppCompatActivity implements
     @BindView(R.id.rv_movie_trailer) RecyclerView mMovieTrailerRecylerView;
     @BindView(R.id.rv_movie_review) RecyclerView mMovieReviewRecylerView;
 
+    @BindView(R.id.sv_movie_detail) ScrollView mMovieDetailScrollView;
+
     @BindString(R.string.mark_as_favorite) String mMarkFavorite;
     @BindString(R.string.unmark_from_favorite) String mUnmarkFavorite;
     @BindString(R.string.pref_sort_by_favorite) String mSortByFavorite;
@@ -61,6 +64,9 @@ public class MovieDetailActivity extends AppCompatActivity implements
     private MovieDBResult movieDBResult;
     private MovieTrailerAdapter movieTrailerAdapter;
     private MovieReviewAdapter movieReviewAdapter;
+    private final String SCROLL_POSITION = "sv_posisition";
+    private Bundle scrollviewInstanceState = null;
+    private int loadingCount = 0;
 
     Boolean isFavorite = false;
 
@@ -98,6 +104,10 @@ public class MovieDetailActivity extends AppCompatActivity implements
         setButtonFavoriteText();
         loadMovieTrailer();
         loadMovieReview();
+
+        if(savedInstanceState != null) {
+            scrollviewInstanceState = savedInstanceState;
+        }
     }
 
     public void setDataToView() {
@@ -138,6 +148,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
                     mMovieTrailerLabel.setVisibility(View.VISIBLE);
                     movieTrailerAdapter.setData(movieDBTrailersResults);
                 }
+                restoreScrollViewPosition();
             }
 
             @Override
@@ -166,6 +177,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
                     mMovieReview.setVisibility(View.VISIBLE);
                     movieReviewAdapter.setData(movieDBReviewsResults);
                 }
+                restoreScrollViewPosition();
             }
 
             @Override
@@ -241,5 +253,26 @@ public class MovieDetailActivity extends AppCompatActivity implements
     @Override
     public void onListItemClick(MovieDBTrailersResult movieDBTrailersResult) {
         openVideoTrailer(movieDBTrailersResult);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putIntArray(SCROLL_POSITION, new int[]{ mMovieDetailScrollView.getScrollX(), mMovieDetailScrollView.getScrollY() });
+    }
+
+    public void restoreScrollViewPosition() {
+        loadingCount++;
+        if(loadingCount == 2 && scrollviewInstanceState != null) {
+            final int[] position = scrollviewInstanceState.getIntArray(SCROLL_POSITION);
+            mMovieDetailScrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mMovieDetailScrollView.scrollTo(position[0], position[1]);
+                }
+            });
+            loadingCount = 0;
+            scrollviewInstanceState = null;
+        }
     }
 }
