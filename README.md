@@ -5,3 +5,6 @@ Please insert your The Movie DB api key at app/src/main/java/com/example/cendana
 replace all "Insert Your API KEY" with your api key provided by The Movie DB.
 
 # Screenshot
+![image](https://user-images.githubusercontent.com/23043839/67489013-04a81980-f69b-11e9-90ae-15d37d7e9037.png)
+![image](https://user-images.githubusercontent.com/23043839/67489178-518bf000-f69b-11e9-801c-d04f3010347a.png)
+
