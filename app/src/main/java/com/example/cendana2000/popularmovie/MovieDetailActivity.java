@@ -5,14 +5,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cendana2000.popularmovie.adapter.MovieReviewAdapter;
 import com.example.cendana2000.popularmovie.adapter.MovieTrailerAdapter;
@@ -120,7 +121,8 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
             String path = movieDBResult.getPosterPath();
             String url  = NetworkUtils.getMoviePosterUrl(path);
-            Picasso.with(this).load(url).into(mMovieThumbnail);
+            String urlGambar = url.replace("http:", "https:");
+            Picasso.with(this).load(urlGambar).into(mMovieThumbnail);
 
             mMovieTitle.setText(movieDBResult.getTitle());
             mMovieRelease.setText(movieDBResult.getReleaseDate());

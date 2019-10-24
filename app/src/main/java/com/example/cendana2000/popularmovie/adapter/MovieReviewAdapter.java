@@ -1,11 +1,12 @@
 package com.example.cendana2000.popularmovie.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cendana2000.popularmovie.R;
 import com.example.cendana2000.popularmovie.utilities.MovieDBReviewsResult;
@@ -39,7 +40,7 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
 
     @Override
     public int getItemCount() {
-        if(movieReviewData == null) return 0;
+        if (movieReviewData == null) return 0;
         return movieReviewData.size();
     }
 
@@ -51,6 +52,7 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
     class MovieReviewViewHolder extends RecyclerView.ViewHolder {
         TextView mMovieTrailerAuthorTextView;
         TextView mMovieTrailerContentTextView;
+
         public MovieReviewViewHolder(View itemView) {
             super(itemView);
             mMovieTrailerAuthorTextView = (TextView) itemView.findViewById(R.id.tv_movie_review_author);

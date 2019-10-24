@@ -8,20 +8,22 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cendana2000.popularmovie.adapter.MoviePosterAdapter;
 import com.example.cendana2000.popularmovie.utilities.MovieDBResponse;
@@ -50,9 +52,11 @@ public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
 
     private MoviePosterAdapter mMoviePosterAdapter;
-    @BindView(R.id.rv_movie_poster) RecyclerView mRecyclerView;
+    @BindView(R.id.rv_movie_poster)
+    RecyclerView mRecyclerView;
     @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
     @BindView(R.id.tv_display_error) LinearLayout mDisplayError;
+    @BindView(R.id.btn_refresh) Button mBtnRefresh;
 
     @BindString(R.string.pref_sort_by_key) String sortByKey;
     @BindString(R.string.pref_sort_by_default) String sortByDefault;
@@ -65,11 +69,14 @@ public class MainActivity extends AppCompatActivity implements
     SharedPreferences sharedPreferences;
     GridLayoutManager layoutManager;
     Bundle mLayoutManagerSavedState = null;
+    private LoaderManager mLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mLoader = LoaderManager.getInstance(this);
 
         // binding
         ButterKnife.bind(this);
@@ -89,6 +96,10 @@ public class MainActivity extends AppCompatActivity implements
             mLayoutManagerSavedState = savedInstanceState;
         }
         setDataToRecylerView();
+
+        mBtnRefresh.setOnClickListener(view -> {
+            setDataToRecylerView();
+        });
     }
 
     // method to calculate the columns
@@ -139,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements
         String prefSortBy = sharedPreferences.getString(sortByKey, sortByDefault);
         Cursor cursor = getContentResolver().query(MovieEntry.CONTENT_URI, null, MovieEntry.COLUMN_SORT_PREF + "=?", new String[]{prefSortBy}, null);
         if(cursor.getCount() > 0) {
-            getSupportLoaderManager().restartLoader(ID_FORECAST_LOADER, null, this);
+            mLoader.restartLoader(ID_FORECAST_LOADER, null, this);
         } else if(prefSortBy.equals(sortByFavorite)) {
             Toast.makeText(getBaseContext(), "You don't have any Favorite Movie yet.", Toast.LENGTH_SHORT).show();
         } else {

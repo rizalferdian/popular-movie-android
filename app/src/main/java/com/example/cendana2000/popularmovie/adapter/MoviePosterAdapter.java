@@ -2,11 +2,12 @@ package com.example.cendana2000.popularmovie.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cendana2000.popularmovie.R;
 import com.example.cendana2000.popularmovie.utilities.MovieDBResult;
@@ -50,7 +51,8 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
         int posterIndex = mMovieData.getColumnIndex(MovieEntry.COLUMN_POSTER);
         String path = mMovieData.getString(posterIndex);
         String url  = NetworkUtils.getMoviePosterUrl(path);
-        Picasso.with(context).load(url).into(holder.mMoviePosterImageView);
+        String urlGambar = url.replace("http:", "https:");
+        Picasso.with(context).load(urlGambar).into(holder.mMoviePosterImageView);
     }
 
     @Override
